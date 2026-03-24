@@ -38,7 +38,8 @@ ActionSegmentationDataset = dataloader_module.ActionSegmentationDataset
 
 
 # Import model from separate module
-from .model import MS_TCN
+# from .model import MS_TCN
+from model import MS_TCN
 
 
 # ============================================================================

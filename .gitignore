@@ -1,2 +1,11 @@
+__pycache__
+
+
 /git_script/
 /dataset/
+/preprocess_dataset/
+/video_segmentation_output/
+/train_result/
+/statistics_results/
+/video_generation_output/
+/export_csv/

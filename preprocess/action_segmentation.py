@@ -42,7 +42,10 @@ from tqdm import tqdm
 
 def parse_timestamp(ts_str):
     """Parse timestamp string HH:MM:SS.mmm to seconds."""
-    parts = ts_str.split(':')
+    if pd.isna(ts_str):
+        return 0.0
+    parts = ts_str.split(':') # original 
+    
     h, m, s = int(parts[0]), int(parts[1]), float(parts[2])
     return h * 3600 + m * 60 + s
 

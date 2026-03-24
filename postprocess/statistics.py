@@ -401,8 +401,10 @@ def main():
     # Handle combined mode or custom video selection
     if args.combined or args.videos:
         # Get absolute paths
-        results_base = Path('/data/zhaozhenghao/Projects/Mouse/results/UMich_CQ/video_inference')
-        gt_base = Path('/data/zhaozhenghao/Projects/Mouse/datasets/UMich_CQ')
+        # results_base = Path('/data/zhaozhenghao/Projects/Mouse/results/UMich_CQ/video_inference') # original
+        results_base = Path('/brtx/605-nvme2/ylu174/research/mouse_bahavior_2/preprocess_dataset') # new
+        # gt_base = Path('/data/zhaozhenghao/Projects/Mouse/datasets/UMich_CQ') # original
+        gt_base = Path('/brtx/605-nvme2/ylu174/research/mouse_bahavior_2/preprocess_dataset') # new
         
         # Determine which videos to analyze
         if args.videos:

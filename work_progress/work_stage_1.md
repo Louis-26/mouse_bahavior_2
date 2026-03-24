@@ -8,7 +8,11 @@
 2. any collaborator in this project
 3. which venue do we want to submit to, and what's the rough timeline
 
+# meeting notes
+- 1s-30 frames
+- licking: {0,1}, shaking: {0,1}
+
 # next step
 - wait for the GPU approval for me to set up the repo
 - figure out the paper to read first
-    
+- figure out the window size of the video(0.333s?), 1s-30 frames
