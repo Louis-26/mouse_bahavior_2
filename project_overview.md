@@ -8,7 +8,7 @@ In modern computer vision, analyzing animal behavior generally falls into two ma
 - Pose-based Classification.  This involves first locating and tracking key body parts (pose estimation) to create a time-series of coordinates, and then training a classifier on these spatial-temporal coordinate features.
 
 # Dataset
-https://drive.google.com/drive/folders/1d9R3DDxqY05nrouCFwhWC4YXDM7jWQsU?usp=drive_link
+https://drive.google.com/drive/folders/1rm2sGUw9QVswf0HRhoUldcDObH3Tb06L?usp=drive_link
 
 # Task
 Supervised Behavior Classification. For this project, our core focus will be on the Supervised Behavior Classification task, utilizing the annotations we already have for the two target behaviors. Whether we choose to work directly from raw video features or utilize pose estimation data, we must keep in mind that existing, off-the-shelf methods might not perfectly fit the unique characteristics of our dataset or project requirements. We will need to think critically about the architecture. For this classification task, we have two main paths forward:

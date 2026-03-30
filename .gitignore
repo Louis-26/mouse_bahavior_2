@@ -9,3 +9,6 @@ __pycache__
 /statistics_results/
 /video_generation_output/
 /export_csv/
+/preprocessed_data/
+
+/SLURM_execution/

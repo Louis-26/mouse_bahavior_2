@@ -1,16 +1,21 @@
 ## environment configuration
 ```bash
-conda create -n mouse_behavior python=3.9 -y
-conda activate mouse_behavior
-pip install -r requriements.txt
-pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu128
-
+ENV_NAME="mouse_behavior"
+if ! conda info --envs | grep -q "/$ENV_NAME"; then
+    conda create -n $ENV_NAME python=3.9 -y
+    source $(conda info --base)/etc/profile.d/conda.sh
+    conda activate $ENV_NAME
+    
+    pip install -r requriements.txt
+    pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+fi
+conda activate $ENV_NAME
 ```
 
 
 ## step 0: download data
 Download data and store it in `dataset` folder
-```
+```markdown
 ├── dataset
     ├── CQ_2.mp4
     ├── CQ_3.mp4
@@ -19,7 +24,25 @@ Download data and store it in `dataset` folder
     ├── itch_video_analysis_CQ_3.xlsx
     ├── itch_video_analysis_CQ_4.xlsx
 ```
+```bash
+cd $(git rev-parse --show-toplevel)
+if ! command -v gdown &> /dev/null; then
+    pip install gdown
+fi
 
+if [ ! -d "dataset" ]; then
+    mkdir dataset
+    # Download the data from Google Drive and move it to the dataset folder
+    # You can use gdown or any other method to download the files
+    gdown --folder https://drive.google.com/drive/folders/1rm2sGUw9QVswf0HRhoUldcDObH3Tb06L?usp=drive_link 
+else
+    echo "Dataset already exists. Skipping download."
+fi
+cd dataset
+for f in itch\ video\ analysisi_*.xlsx; do
+    mv "$f" "${f#itch video analysisi_}"
+done
+```
 
 ## step 1: preprocess xlsx
 
@@ -63,7 +86,7 @@ if pd.isna(ts_str):
 
 feature extraction elasted time: 05:22+06:34+07:43=19 min 39 s, (may vary with different devices)
 
-## step 1.4: advanced split
+### step 1.4: advanced split
 ```bash
 python advanced_split.py \
     --dataset_root ../video_segmentation_output \
@@ -201,11 +224,16 @@ modify:
 statistics.py > line 410-411
 ```python
 # results_base = Path('/data/zhaozhenghao/Projects/Mouse/results/UMich_CQ/video_inference') # original
-results_base = Path('/brtx/605-nvme2/ylu174/research/mouse_bahavior_2/preprocess_dataset') # new
+current_script_dir = Path(__file__).resolve().parent
+results_base = current_script_dir.parent / "preprocess_dataset" # new
 # gt_base = Path('/data/zhaozhenghao/Projects/Mouse/datasets/UMich_CQ') # original
-gt_base = Path('/brtx/605-nvme2/ylu174/research/mouse_bahavior_2/preprocess_dataset') # new
+gt_base = current_script_dir.parent / "preprocess_dataset" # new
 ```
-
+statistics.py > line 420-421
+```python
+# 'inference_dir': str(results_base / video_name), # old
+'inference_dir': str(results_base / f"{video_name}_results"), # new
+```
 
 ### step 3.2: video generation
 ❌not available, as keypoint file is required
@@ -228,7 +256,7 @@ grep -qxF "/video_generation_output/" ../.gitignore || echo -e "\n/video_generat
 ```bash
 mkdir -p ../export_csv
 python to_csv.py \
-    --json_path ../preprocess_dataset/CQ_4/statistics.json \
+    --json_path ../preprocess_dataset/CQ_4_results/statistics.json \
     --output ../export_csv/CQ_4_export.csv
 grep -qxF "/export_csv/" ../.gitignore || echo -e "\n/export_csv/" >> ../.gitignore
 ```

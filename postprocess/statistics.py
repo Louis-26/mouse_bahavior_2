@@ -402,9 +402,10 @@ def main():
     if args.combined or args.videos:
         # Get absolute paths
         # results_base = Path('/data/zhaozhenghao/Projects/Mouse/results/UMich_CQ/video_inference') # original
-        results_base = Path('/brtx/605-nvme2/ylu174/research/mouse_bahavior_2/preprocess_dataset') # new
+        current_script_dir = Path(__file__).resolve().parent
+        results_base = current_script_dir.parent / "preprocess_dataset" # new
         # gt_base = Path('/data/zhaozhenghao/Projects/Mouse/datasets/UMich_CQ') # original
-        gt_base = Path('/brtx/605-nvme2/ylu174/research/mouse_bahavior_2/preprocess_dataset') # new
+        gt_base = current_script_dir.parent / "preprocess_dataset" # new
         
         # Determine which videos to analyze
         if args.videos:
@@ -416,7 +417,8 @@ def main():
         video_configs = []
         for video_name in video_names:
             video_configs.append({
-                'inference_dir': str(results_base / video_name),
+                # 'inference_dir': str(results_base / video_name), # old
+                'inference_dir': str(results_base / f"{video_name}_results"), # new
                 'ground_truth': str(gt_base / f'{video_name}.csv')
             })
         
@@ -545,3 +547,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
