@@ -191,6 +191,7 @@ python inference_raw_video.py \
 python inference_raw_video.py \
     --video_path ../preprocess_dataset/CQ_4.mp4 \
     --checkpoint ../train_result/resnet_only/checkpoints/best.pth \
+    --output_dir ../preprocess_dataset/CQ_4_results \
     --save_video
 ```
 option 2, test on CQ_4.mp4:

@@ -4,7 +4,13 @@ __pycache__
 /git_script/
 /dataset/
 /preprocess_dataset/
+/balanced_dataset/
+
 /video_segmentation_output/
+/video_segmentation_output_balanced/
+
+
+
 /train_result/
 /statistics_results/
 /video_generation_output/
