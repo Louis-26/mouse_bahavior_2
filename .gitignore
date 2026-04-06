@@ -2,12 +2,11 @@ __pycache__
 
 
 /git_script/
-/dataset/
-/preprocess_dataset/
-/balanced_dataset/
 
-/video_segmentation_output/
-/video_segmentation_output_balanced/
+
+
+
+
 
 
 
@@ -15,6 +14,22 @@ __pycache__
 /statistics_results/
 /video_generation_output/
 /export_csv/
-/preprocessed_data/
+
 
 /SLURM_execution/
+
+# dataset
+/balanced_dataset/
+/dataset/
+/preprocess_dataset/
+/up_sample_dataset/
+/down_sample_dataset/
+/up_sample_dataset_tmp/
+/down_sample_dataset_tmp/
+
+# video segmentation
+/video_segmentation_output_focal/
+/video_segmentation_output/
+/video_segmentation_output_balanced/
+/video_segmentation_output_down/
+/video_segmentation_output_up/
