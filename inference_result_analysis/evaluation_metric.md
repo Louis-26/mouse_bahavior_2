@@ -20,7 +20,12 @@ $$Accuracy = \frac{TP + TN}{TP + TN + FP + FN}$$
 $$Precision = \frac{TP}{TP + FP}$$
 
 ## Recall
+accuracy in `scratching`
 $$Recall = \frac{TP}{TP + FN}$$
+
+accuracy in `no behavior`
+$$Specificity = \frac{TN}{TN + FP}$$
+
 
 ## F1 Score
 $$F1 Score = 2 \times \frac{Precision \times Recall}{Precision + Recall}$$

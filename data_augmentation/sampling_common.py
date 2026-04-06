@@ -257,3 +257,9 @@ def rebuild_pair(basename, input_dir, output_dir, selected_segments):
 
     rebuild_csv_rows(csv_rows).to_csv(output_csv_path, index=False)
     compute_csv_class_percentages(output_csv_path)
+
+
+if "__name__" == "__main__":
+    # example usage
+    # rebuild_pair("CQ_2", "dataset/preprocess_dataset", "dataset/up_sample_dataset", choose_upsampled_segments(load_segments("dataset/preprocess_dataset/CQ_2.csv"), target_positive_ratio=DEFAULT_TARGET_POSITIVE_RATIO, enable_augmentation=True, max_aug_per_segment=DEFAULT_MAX_AUG_PER_SEGMENT))
+    pass

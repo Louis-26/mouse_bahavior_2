@@ -27,16 +27,15 @@ import json
 with open("multi_video_results.json") as f:
     data_baseline = json.load(f)
 
-with open("multi_video_results_focal.json") as f:
+with open("multi_video_results_down.json") as f:
     data_new = json.load(f)
 
-print("precision from baseline to focal:", data_baseline["frame_accuracy"]["precision"], "->", data_new["frame_accuracy"]["precision"])
-print("f1_score from baseline to focal:", data_baseline["frame_accuracy"]["f1_score"], "->", data_new["frame_accuracy"]["f1_score"])
+print("precision from baseline to downsampling:", data_baseline["frame_accuracy"]["precision"], "->", data_new["frame_accuracy"]["precision"])
+print("f1_score from baseline to downsampling:", data_baseline["frame_accuracy"]["f1_score"], "->", data_new["frame_accuracy"]["f1_score"])
 '
 ```
 
 result
 ```text
-precision from baseline to focal: 0.21800760215394363 -> 0.2175413822860281
-f1_score from baseline to focal: 0.30158295448321193 -> 0.3018067043970396
+
 ```

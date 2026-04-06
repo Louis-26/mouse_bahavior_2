@@ -21,4 +21,7 @@
 
 ## Next step
 As the folder number has increased, I will make it more structured
-- data
+├── dataset
+|   ├── preprocess_dataset
+|   ├── up_sample_dataset
+|   ├── down_sample_dataset

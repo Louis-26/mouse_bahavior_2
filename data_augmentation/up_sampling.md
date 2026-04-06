@@ -24,10 +24,10 @@ cd $(git rev-parse --show-toplevel)/statistics_results
 python -c '
 import json
 
-with open("multi_video_results.json") as f:
+with open("multi_video_results_up.json") as f:
     data = json.load(f)
 
-print("precision:", data["frame_accuracy"]["precision"])
-print("f1_score:", data["frame_accuracy"]["f1_score"])
+print("precision from baseline to upsampling:", data["frame_accuracy"]["precision"])
+print("f1_score from baseline to upsampling:", data["frame_accuracy"]["f1_score"])
 '
 ```
