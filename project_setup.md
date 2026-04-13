@@ -30,15 +30,15 @@ if ! command -v gdown &> /dev/null; then
     pip install gdown
 fi
 
-if [ ! -d "dataset" ]; then
-    mkdir dataset
+if [ ! -d "orig_dataset" ]; then
+    mkdir -p orig_dataset
     # Download the data from Google Drive and move it to the dataset folder
     # You can use gdown or any other method to download the files
     gdown --folder https://drive.google.com/drive/folders/1rm2sGUw9QVswf0HRhoUldcDObH3Tb06L?usp=drive_link 
 else
     echo "Dataset already exists. Skipping download."
 fi
-cd dataset
+cd orig_dataset
 for f in itch\ video\ analysisi_*.xlsx; do
     mv "$f" "${f#itch video analysisi_}"
 done

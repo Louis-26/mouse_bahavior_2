@@ -5,7 +5,9 @@ use [down-sampling script](../data_augmentation/down_sample.py)
 then create downsampled dataset
 ```bash
 cd $(git rev-parse --show-toplevel)/data_augmentation
-python down_sample.py 
+conda activate mouse_behavior
+ml ffmpeg/4.2.2
+python down_sample.py --input_dir ../preprocess_dataset_overall/dataset --output_dir ../preprocess_dataset_overall/down_sample_dataset
 grep -qxF "/down_sample_dataset/" ../.gitignore || echo -e "\n/down_sample_dataset/" >> ../.gitignore
 ```
 

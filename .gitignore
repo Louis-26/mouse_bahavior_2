@@ -19,17 +19,19 @@ __pycache__
 /SLURM_execution/
 
 # dataset
-/balanced_dataset/
-/dataset/
-/preprocess_dataset/
-/up_sample_dataset/
-/down_sample_dataset/
-/up_sample_dataset_tmp/
-/down_sample_dataset_tmp/
+# /balanced_dataset/
+# /dataset/
+# /preprocess_dataset/
+# /up_sample_dataset/
+# /down_sample_dataset/
+/orig_dataset/
+/preprocess_dataset_overall/
 
 # video segmentation
-/video_segmentation_output_focal/
-/video_segmentation_output/
-/video_segmentation_output_balanced/
-/video_segmentation_output_down/
-/video_segmentation_output_up/
+# /video_segmentation_output_focal/
+# /video_segmentation_output/
+# /video_segmentation_output_balanced/
+# /video_segmentation_output_down/
+# /video_segmentation_output_up/
+/video_generation_output_overall/
+/video_segmentation_output_overall/
