@@ -1,8 +1,9 @@
 # dataset
 ORIG_DATASET="orig_dataset"
 DATASET="dataset"
-VIDEO_SEG_OUTPUT="video_segmentation_output"
-STATS_OUTPUT="multi_video_results.json"
+VIDEO_SEG_OUTPUT="video_segmentation_output_focal"
+STATS_OUTPUT="multi_video_results_focal"
+INFERENCE_DIR="preprocess_dataset_overall/dataset"
 CSV_EXPORT="CQ_4_export.csv"
 
 # step 1. environment configuration and data preparation
@@ -150,8 +151,9 @@ echo "🚀step 4.1, start for statistical analysis"
 mkdir -p ../statistics_results
 python statistics.py \
     --ground-truth ../preprocess_dataset_overall/$DATASET \
+    --inference-dir $INFERENCE_DIR \
     --videos CQ_4 \
-    --output ../statistics_results/$STATS_OUTPUT
+    --output "../statistics_results/${STATS_OUTPUT}.json"
 grep -qxF "/statistics_results/" ../.gitignore || echo -e "\n/statistics_results/" >> ../.gitignore
 echo "✅step 4.1, statistical analysis is done"
 

@@ -265,3 +265,9 @@ grep -qxF "/export_csv/" ../.gitignore || echo -e "\n/export_csv/" >> ../.gitign
 
 ### step 3.4: idea from UMich
 ❌not yet implemented
+
+# execution
+```bash
+cd $(git rev-parse --show-toplevel)/SLURM_execution/SLURM_script
+sbatch execution_pipeline.sh
+```

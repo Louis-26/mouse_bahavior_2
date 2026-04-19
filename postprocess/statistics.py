@@ -403,9 +403,9 @@ def main():
         # Get absolute paths
         # results_base = Path('/data/zhaozhenghao/Projects/Mouse/results/UMich_CQ/video_inference') # original
         current_script_dir = Path(__file__).resolve().parent
-        results_base = current_script_dir.parent / "preprocess_dataset" # new
+        results_base = current_script_dir.parent / args.inference_dir # new
         # gt_base = Path('/data/zhaozhenghao/Projects/Mouse/datasets/UMich_CQ') # original
-        gt_base = current_script_dir.parent / "preprocess_dataset" # new
+        gt_base = current_script_dir.parent / args.inference_dir # new
         
         # Determine which videos to analyze
         if args.videos:
