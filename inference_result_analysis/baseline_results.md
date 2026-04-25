@@ -1,3 +1,12 @@
+# train result
+evaluation on `CQ_2.csv`, `CQ_3.csv`, `CQ_4.csv`
+
+
+
+
+
+# test result
+evaluation on `CQ_4.csv`
 ## background information
 - target video: `CQ_4.mp4`
 - video length: 32 min 40 s

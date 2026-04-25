@@ -5,6 +5,7 @@ VIDEO_SEG_OUTPUT="video_segmentation_output_focal"
 STATS_OUTPUT="multi_video_results_focal"
 INFERENCE_DIR="preprocess_dataset_overall/dataset"
 CSV_EXPORT="CQ_4_export_focal.csv"
+FOCAL_RANGE="8.0"
 
 # step 1. environment configuration and data preparation
 echo "🚀step 1, start for environment configuration and data preparation"
@@ -116,6 +117,7 @@ NUM_LAYERS=10
 NUM_F_MAPS=64
 FEATURE_DIM=2048  # ResNet50 features only
 
+
 python train.py \
     --dataset_root "../video_segmentation_output_overall/$VIDEO_SEG_OUTPUT" \
     --output_dir "../train_result/resnet_only" \
@@ -127,6 +129,7 @@ python train.py \
     --num_f_maps ${NUM_F_MAPS} \
     --feature_dim ${FEATURE_DIM} \
     --use_focal_loss \
+    --focal_gamma ${FOCAL_RANGE} \
     --device cuda
 
 grep -qxF "/train_result/" ../.gitignore || echo -e "\n/train_result/" >> ../.gitignore

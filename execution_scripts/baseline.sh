@@ -1,10 +1,19 @@
+# train 
+ACTION_SEG_RETRAIN=false
+ADVANCED_SPLIT_RETRAIN=false
+MODEL_RETRAIN=false
+
 # dataset
 ORIG_DATASET="orig_dataset"
 DATASET="dataset"
-VIDEO_SEG_OUTPUT="video_segmentation_output_focal"
-STATS_OUTPUT="multi_video_results_focal"
+VIDEO_SEG_OUTPUT="video_segmentation_output"
+STATS_OUTPUT="multi_video_results"
 INFERENCE_DIR="preprocess_dataset_overall/dataset"
-CSV_EXPORT="CQ_4_export.csv"
+# CSV_EXPORT="CQ_4_export.csv"
+# EVAL_DATASET="CQ_4"
+CSV_EXPORT="CQ_3_export.csv"
+EVAL_DATASET="CQ_3"
+
 
 # step 1. environment configuration and data preparation
 echo "🚀step 1, start for environment configuration and data preparation"
@@ -75,23 +84,37 @@ echo "🚀step 2.3, start for action segmentation"
 cd $(git rev-parse --show-toplevel)
 mkdir -p video_segmentation_output_overall/$VIDEO_SEG_OUTPUT
 cd preprocess
-python action_segmentation.py \
-    --video_dir ../preprocess_dataset_overall/$DATASET \
-    --videos CQ_2.mp4 CQ_3.mp4 CQ_4.mp4 \
-    --csvs CQ_2.csv CQ_3.csv CQ_4.csv \
-    --output_dir ../video_segmentation_output_overall/$VIDEO_SEG_OUTPUT \
-    --split_mode video \
-    --test_videos CQ_4
+
+if [ ! -z "$(ls -A "../video_segmentation_output_overall/$VIDEO_SEG_OUTPUT" 2>/dev/null)" ] && [ "$ACTION_SEG_RETRAIN" = false ]; then
+    echo "Segmented videos already exist and explicitly asked not to retrain, skipping action segmentation."
+
+else
+    python action_segmentation.py \
+        --video_dir ../preprocess_dataset_overall/$DATASET \
+        --videos CQ_2.mp4 CQ_3.mp4 CQ_4.mp4 \
+        --csvs CQ_2.csv CQ_3.csv CQ_4.csv \
+        --output_dir ../video_segmentation_output_overall/$VIDEO_SEG_OUTPUT \
+        --split_mode video \
+        --test_videos CQ_4
+fi
+
 grep -qxF "/video_segmentation_output_overall/" ../.gitignore || echo -e "\n/video_segmentation_output_overall/" >> ../.gitignore
 echo "✅step 2.3, action segmentation is done"
 
 ## step 2.4: advanced split
 echo "🚀step 2.4, start for advanced split"
-python advanced_split.py \
-    --dataset_root ../video_segmentation_output_overall/$VIDEO_SEG_OUTPUT \
-    --train_videos CQ_2 CQ_3 \
-    --val_videos CQ_4 \
-    --split_mode video
+
+if [ ! -z "$(ls -A "../video_segmentation_output_overall/$VIDEO_SEG_OUTPUT/split" 2>/dev/null)" ] && [ "$ADVANCED_SPLIT_RETRAIN" = false ]; then
+    echo "Split videos already exist and explicitly asked not to retrain, skipping advanced split."
+
+else
+    python advanced_split.py \
+        --dataset_root ../video_segmentation_output_overall/$VIDEO_SEG_OUTPUT \
+        --train_videos CQ_2 CQ_3 \
+        --val_videos CQ_4 \
+        --split_mode video
+fi
+
 echo "✅step 2.4, advanced split is done"
 ## step 2.5: feature extraction
 # skip as keypoint is missing
@@ -116,17 +139,25 @@ NUM_LAYERS=10
 NUM_F_MAPS=64
 FEATURE_DIM=2048  # ResNet50 features only
 
-python train.py \
-    --dataset_root "../video_segmentation_output_overall/$VIDEO_SEG_OUTPUT" \
-    --output_dir "../train_result/resnet_only" \
-    --batch_size ${BATCH_SIZE} \
-    --num_epochs ${NUM_EPOCHS} \
-    --lr ${LEARNING_RATE} \
-    --num_stages ${NUM_STAGES} \
-    --num_layers ${NUM_LAYERS} \
-    --num_f_maps ${NUM_F_MAPS} \
-    --feature_dim ${FEATURE_DIM} \
-    --device cuda
+
+if [ ! -z "$(ls -A "../train_result/resnet_only" 2>/dev/null)" ] && [ "$MODEL_RETRAIN" = false ]; then
+    echo "Model checkpoints already exist and explicitly asked not to retrain, skipping model training."
+
+else
+    python train.py \
+        --dataset_root "../video_segmentation_output_overall/$VIDEO_SEG_OUTPUT" \
+        --output_dir "../train_result/resnet_only" \
+        --batch_size ${BATCH_SIZE} \
+        --num_epochs ${NUM_EPOCHS} \
+        --lr ${LEARNING_RATE} \
+        --num_stages ${NUM_STAGES} \
+        --num_layers ${NUM_LAYERS} \
+        --num_f_maps ${NUM_F_MAPS} \
+        --feature_dim ${FEATURE_DIM} \
+        --device cuda
+fi
+
+
 
 grep -qxF "/train_result/" ../.gitignore || echo -e "\n/train_result/" >> ../.gitignore
 echo "✅step 3.1, model training is done"
@@ -135,8 +166,8 @@ echo "✅step 3.1, model training is done"
 echo "🚀step 3.2, start for model inference"
 # option 2, without keypoint features
 python inference_raw_video.py \
-    --video_path ../preprocess_dataset_overall/$DATASET/CQ_4.mp4 \
-    --checkpoint ../train_result/resnet_only/checkpoints/best.pth \
+    --video_path "../preprocess_dataset_overall/$DATASET/${EVAL_DATASET}.mp4" \
+    --checkpoint "../train_result/resnet_only/checkpoints/best.pth" \
     --save_video
 echo "✅step 3.2, model inference is done"
 
@@ -152,7 +183,7 @@ mkdir -p ../statistics_results
 python statistics.py \
     --ground-truth ../preprocess_dataset_overall/$DATASET \
     --inference-dir $INFERENCE_DIR \
-    --videos CQ_4 \
+    --videos $EVAL_DATASET \
     --output "../statistics_results/${STATS_OUTPUT}.json"
 grep -qxF "/statistics_results/" ../.gitignore || echo -e "\n/statistics_results/" >> ../.gitignore
 echo "✅step 4.1, statistical analysis is done"
@@ -164,7 +195,7 @@ echo "✅step 4.1, statistical analysis is done"
 echo "🚀step 4.3, start for csv export"
 mkdir -p ../export_csv
 python to_csv.py \
-    --json_path ../preprocess_dataset_overall/$DATASET/CQ_4_results/statistics.json \
+    --json_path "../preprocess_dataset_overall/$DATASET/${EVAL_DATASET}_results/statistics.json" \
     --output ../export_csv/$CSV_EXPORT
 grep -qxF "/export_csv/" ../.gitignore || echo -e "\n/export_csv/" >> ../.gitignore
 echo "✅step 4.3, csv export is done"

@@ -1,10 +1,12 @@
 # dataset
 ORIG_DATASET="orig_dataset"
-DATASET="down_sample_dataset"
-VIDEO_SEG_OUTPUT="video_segmentation_output_down"
-STATS_OUTPUT="multi_video_results_down"
-INFERENCE_DIR="preprocess_dataset_overall/down_sample_dataset"
-CSV_EXPORT="CQ_4_export_down.csv"
+# DATASET="down_sample_dataset"
+DATASET="down_sample_2_dataset"
+VIDEO_SEG_OUTPUT="video_segmentation_output_down_2"
+STATS_OUTPUT="multi_video_results_down_2"
+INFERENCE_DIR="preprocess_dataset_overall/down_sample_2_dataset"
+CSV_EXPORT="CQ_4_export_down_2.csv"
+
 
 # step 1. environment configuration and data preparation
 echo "🚀step 1, start for environment configuration and data preparation"
