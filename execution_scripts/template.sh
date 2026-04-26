@@ -1,19 +1,69 @@
+#!/bin/bash
+
+# ==========================================
+# 1. Set Default Parameters
+# ==========================================
 ENV_NAME="mouse_behavior"
-# train 
 ACTION_SEG_RETRAIN=false
 ADVANCED_SPLIT_RETRAIN=false
 MODEL_RETRAIN=false
+EVAL_DATASET="CQ_3"
 
-# dataset
+# ==========================================
+# 2. Define Help Function
+# ==========================================
+usage() {
+    echo "Usage: $0 [OPTIONS]"
+    echo ""
+    echo "Options:"
+    echo "  -h, --help                 Show this help message"
+    echo "  --env-name NAME            Specify Conda environment name (Default: mouse_behavior)"
+    echo "  --retrain-action-seg       Force rerun of Action Segmentation"
+    echo "  --retrain-split            Force rerun of Advanced Split"
+    echo "  --retrain-model            Force retraining of the model"
+    echo "  --eval-dataset DATASET     Specify dataset for inference and evaluation (Default: CQ_3)"
+    echo ""
+    echo "Example:"
+    echo "  bash $0 --eval-dataset CQ_4 --retrain-model"
+    exit 1
+}
+
+# ==========================================
+# 3. Parse Command-Line Arguments
+# ==========================================
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -h|--help) usage ;;
+        --env-name) ENV_NAME="$2"; shift ;;
+        --retrain-action-seg) ACTION_SEG_RETRAIN=true ;;
+        --retrain-split) ADVANCED_SPLIT_RETRAIN=true ;;
+        --retrain-model) MODEL_RETRAIN=true ;;
+        --eval-dataset) EVAL_DATASET="$2"; shift ;;
+        *) echo "❌ Unknown parameter passed: $1"; usage ;;
+    esac
+    shift # Move to the next argument
+done
+
+# ==========================================
+# 4. Configure Derived Variables
+# ==========================================
 ORIG_DATASET="orig_dataset"
 DATASET="dataset"
 VIDEO_SEG_OUTPUT="video_segmentation_output"
 STATS_OUTPUT="multi_video_results"
-INFERENCE_DIR="preprocess_dataset_overall/dataset"
-# CSV_EXPORT="CQ_4_export.csv"
-# EVAL_DATASET="CQ_4"
-CSV_EXPORT="CQ_3_export.csv"
-EVAL_DATASET="CQ_3"
+INFERENCE_DIR="preprocess_dataset_overall/$DATASET"
+CSV_EXPORT="${EVAL_DATASET}_export.csv"
+
+# Print current configuration for logging purposes
+echo "=================================================="
+echo "⚙️  Current Pipeline Configuration:"
+echo "  Conda Env:           $ENV_NAME"
+echo "  Eval Dataset:        $EVAL_DATASET"
+echo "  Retrain Action Seg:  $ACTION_SEG_RETRAIN"
+echo "  Retrain Split:       $ADVANCED_SPLIT_RETRAIN"
+echo "  Retrain Model:       $MODEL_RETRAIN"
+echo "=================================================="
+echo ""
 
 
 # step 1. environment configuration and data preparation

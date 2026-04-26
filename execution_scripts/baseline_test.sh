@@ -1,0 +1,1 @@
+bash template.sh --eval-dataset CQ_2
